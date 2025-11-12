@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react';
 import { Category, getEventCountByCategory } from '@/lib/mockData';
 import { getSavedEventCount } from '@/lib/savedEvents';
+import { CategoryNotificationsModal } from './modals/CategoryNotificationsModal';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -30,6 +31,21 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
     getEventCountByCategory()
   );
   const [savedCount, setSavedCount] = useState(0);
+  const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
+  const [notificationCategories, setNotificationCategories] = useState<Set<string>>(new Set());
+
+  // Load notification preferences from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem('categoryNotifications');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setNotificationCategories(new Set(parsed));
+      } catch (e) {
+        console.error('Failed to parse notification preferences:', e);
+      }
+    }
+  }, []);
 
   // Update saved count on mount and set up interval to refresh
   useEffect(() => {
@@ -44,6 +60,12 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
 
     return () => clearInterval(interval);
   }, []);
+
+  const handleSaveNotifications = (enabledCategories: Set<string>) => {
+    setNotificationCategories(enabledCategories);
+    // Save to localStorage
+    localStorage.setItem('categoryNotifications', JSON.stringify(Array.from(enabledCategories)));
+  };
 
   return (
     <div className={styles.sidebar}>
@@ -69,13 +91,24 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
         <button className={styles.quickActionBtn}>
           ⭐ Saved Events ({savedCount})
         </button>
-        <button className={styles.quickActionBtn}>
-          🔔 Category Notifications
+        <button
+          className={styles.quickActionBtn}
+          onClick={() => setIsNotificationsModalOpen(true)}
+        >
+          🔔 Category Notifications ({notificationCategories.size})
         </button>
         <button className={styles.quickActionBtn}>
           📤 Export Calendar
         </button>
       </div>
+
+      {/* Category Notifications Modal */}
+      <CategoryNotificationsModal
+        isOpen={isNotificationsModalOpen}
+        onClose={() => setIsNotificationsModalOpen(false)}
+        onSave={handleSaveNotifications}
+        initialCategories={notificationCategories}
+      />
     </div>
   );
 }
@@ -105,7 +138,7 @@ function CategoryFilter({ category, enabled, count, onToggle }: CategoryFilterPr
         }}
       />
       <span className={styles.filterLabel}>{category.label}</span>
-      <span className={styles.filterCount}>{count}</span>
+      <span className={styles.filterCount} style={{ color: category.color }}>({count})</span>
     </div>
   );
 }
