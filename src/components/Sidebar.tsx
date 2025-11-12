@@ -5,9 +5,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Category, getEventCountByCategory } from '@/lib/mockData';
+import { Category, getEventCountByCategory, mockEvents } from '@/lib/mockData';
 import { getSavedEventCount } from '@/lib/savedEvents';
 import { CategoryNotificationsModal } from './modals/CategoryNotificationsModal';
+import { exportEvents } from '@/lib/icsExport';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -67,6 +68,11 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
     localStorage.setItem('categoryNotifications', JSON.stringify(Array.from(enabledCategories)));
   };
 
+  const handleExportCalendar = () => {
+    // Export all events to .ics file
+    exportEvents(mockEvents, 'HoagieCalendar_Events');
+  };
+
   return (
     <div className={styles.sidebar}>
       {/* Categories section */}
@@ -97,7 +103,7 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
         >
           🔔 Category Notifications ({notificationCategories.size})
         </button>
-        <button className={styles.quickActionBtn}>
+        <button className={styles.quickActionBtn} onClick={handleExportCalendar}>
           📤 Export Calendar
         </button>
       </div>

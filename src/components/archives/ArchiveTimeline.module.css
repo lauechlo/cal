@@ -140,6 +140,11 @@
   flex-shrink: 0;
 }
 
+.interestedBadge {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
 .categoryBadge {
   flex-shrink: 0;
   display: inline-block;

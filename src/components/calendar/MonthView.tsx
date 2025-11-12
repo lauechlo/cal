@@ -19,6 +19,7 @@ import {
 } from 'date-fns';
 import { Event, getEventsForDate } from '@/lib/mockData';
 import { searchEvents } from '@/lib/searchEvents';
+import { isEventInterested } from '@/lib/interestedEvents';
 import styles from './MonthView.module.css';
 
 interface MonthViewProps {
@@ -107,6 +108,7 @@ function DayCell({ date, isCurrentMonth, isToday, onEventClick, enabledCategorie
             onClick={() => onEventClick?.(event)}
             title={event.title}
           >
+            {isEventInterested(event.id) && <span className={styles.interestedBadge}>👍</span>}
             {event.title}
           </div>
         ))}

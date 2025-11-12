@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { format, parseISO, startOfMonth, isSameMonth } from 'date-fns'
 import { Event, Category, categories } from '@/lib/mockData'
 import { isEventSaved } from '@/lib/savedEvents'
+import { isEventInterested } from '@/lib/interestedEvents'
 import styles from './ArchiveTimeline.module.css'
 
 interface ArchiveTimelineProps {
@@ -74,6 +75,7 @@ export default function ArchiveTimeline({ events, onEventClick }: ArchiveTimelin
               const categoryInfo = getCategoryInfo(event.category)
               const isExpanded = expandedEmails.has(event.id)
               const isSaved = isEventSaved(event.id)
+              const isInterested = isEventInterested(event.id)
 
               return (
                 <div key={event.id} className={styles.eventCard}>
@@ -99,6 +101,11 @@ export default function ArchiveTimeline({ events, onEventClick }: ArchiveTimelin
                           {isSaved && (
                             <span className={styles.savedBadge} title="Saved event">
                               ⭐
+                            </span>
+                          )}
+                          {isInterested && (
+                            <span className={styles.interestedBadge} title="You're going!">
+                              👍
                             </span>
                           )}
                         </div>

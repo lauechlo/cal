@@ -119,6 +119,12 @@
   z-index: 10;
 }
 
+.interestedBadge {
+  font-size: 10px;
+  margin-right: 4px;
+  display: inline-block;
+}
+
 .moreEvents {
   font-size: 11px;
   padding: 4px 8px;

@@ -7,6 +7,8 @@
 import { useState, useEffect } from 'react';
 import { Event, Category } from '@/lib/mockData';
 import { isEventSaved, toggleEventSaved } from '@/lib/savedEvents';
+import { isEventInterested, toggleEventInterested } from '@/lib/interestedEvents';
+import { exportEvent } from '@/lib/icsExport';
 import styles from './EventDetailModal.module.css';
 
 interface EventDetailModalProps {
@@ -28,11 +30,13 @@ const CATEGORY_LABELS: Record<Category, string> = {
 
 export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalProps) {
   const [isSaved, setIsSaved] = useState(false);
+  const [isInterested, setIsInterested] = useState(false);
 
-  // Update saved state when event changes
+  // Update saved and interested state when event changes
   useEffect(() => {
     if (event) {
       setIsSaved(isEventSaved(event.id));
+      setIsInterested(isEventInterested(event.id));
     }
   }, [event]);
 
@@ -47,6 +51,15 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
   const handleSaveToggle = () => {
     const newSavedState = toggleEventSaved(event.id);
     setIsSaved(newSavedState);
+  };
+
+  const handleInterestedToggle = () => {
+    const newInterestedState = toggleEventInterested(event.id);
+    setIsInterested(newInterestedState);
+  };
+
+  const handleAddToCalendar = () => {
+    exportEvent(event);
   };
 
   return (
@@ -115,7 +128,13 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
           >
             {isSaved ? '⭐ Saved!' : '⭐ Save Event'}
           </button>
-          <button className={styles.btnSecondary}>
+          <button
+            className={isInterested ? styles.btnInterested : styles.btnSecondary}
+            onClick={handleInterestedToggle}
+          >
+            {isInterested ? '👍 I\'m Going!' : '👍 Mark Interested'}
+          </button>
+          <button className={styles.btnSecondary} onClick={handleAddToCalendar}>
             📅 Add to Calendar
           </button>
         </div>
