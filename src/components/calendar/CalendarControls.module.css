@@ -1,0 +1,100 @@
+/**
+ * CalendarControls styles
+ */
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid var(--color-border);
+  background: white;
+}
+
+.controlsLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.monthTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  margin: 0;
+}
+
+.navButtons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.navBtn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  background: white;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 18px;
+  color: var(--color-text);
+}
+
+.navBtn:hover {
+  background: #F9FAFB;
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+.todayBtn {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  background: white;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: var(--color-text);
+}
+
+.todayBtn:hover {
+  background: #F9FAFB;
+  border-color: var(--color-primary);
+}
+
+.viewToggle {
+  display: flex;
+  gap: 4px;
+  background: #F3F4F6;
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+.viewBtn {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: all 0.2s;
+}
+
+.viewBtn.active {
+  background: white;
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.viewBtn:hover:not(.active) {
+  color: var(--color-text);
+}
