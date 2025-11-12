@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { Pane } from 'evergreen-ui';
 import Nav from '@/lib/hoagie-ui/Nav';
 import { MonthView } from '@/components/calendar/MonthView';
+import { WeekView } from '@/components/calendar/WeekView';
+import { DayView } from '@/components/calendar/DayView';
 import { CalendarControls } from '@/components/calendar/CalendarControls';
 import { Sidebar } from '@/components/Sidebar';
 import { EventDetailModal } from '@/components/modals/EventDetailModal';
@@ -91,14 +93,18 @@ export default function CalendarPage() {
               />
             )}
             {view === 'week' && (
-              <div style={{ padding: '40px', textAlign: 'center', color: '#6B7280' }}>
-                📅 Week view coming soon!
-              </div>
+              <WeekView
+                date={currentDate}
+                onEventClick={handleEventClick}
+                enabledCategories={enabledCategories}
+              />
             )}
             {view === 'day' && (
-              <div style={{ padding: '40px', textAlign: 'center', color: '#6B7280' }}>
-                📋 Day view coming soon!
-              </div>
+              <DayView
+                date={currentDate}
+                onEventClick={handleEventClick}
+                enabledCategories={enabledCategories}
+              />
             )}
           </div>
         </main>
