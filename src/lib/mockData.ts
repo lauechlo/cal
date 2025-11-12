@@ -5,6 +5,17 @@
 
 export type Category = 'social' | 'academic' | 'food' | 'arts' | 'sports' | 'career' | 'housing' | 'other';
 
+export const categories: Array<{ id: Category; name: string; color: string }> = [
+  { id: 'social', name: 'Social Events', color: '#EF4444' },
+  { id: 'academic', name: 'Academic', color: '#3B82F6' },
+  { id: 'food', name: 'Food & Dining', color: '#F59E0B' },
+  { id: 'arts', name: 'Arts & Culture', color: '#A855F7' },
+  { id: 'sports', name: 'Sports & Fitness', color: '#10B981' },
+  { id: 'career', name: 'Career', color: '#8B5CF6' },
+  { id: 'housing', name: 'Housing & Sales', color: '#F43F5E' },
+  { id: 'other', name: 'Other', color: '#6B7280' },
+];
+
 export interface Event {
   id: string;
   title: string;
