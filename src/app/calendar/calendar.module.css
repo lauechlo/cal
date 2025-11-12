@@ -18,15 +18,6 @@
   overflow-y: auto;
 }
 
-.sidebarPlaceholder {
-  padding: var(--spacing-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  text-align: center;
-}
-
 .calendarMain {
   flex: 1;
   display: flex;

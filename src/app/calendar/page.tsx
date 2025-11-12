@@ -10,6 +10,7 @@ import { Pane } from 'evergreen-ui';
 import Nav from '@/lib/hoagie-ui/Nav';
 import { MonthView } from '@/components/calendar/MonthView';
 import { CalendarControls } from '@/components/calendar/CalendarControls';
+import { Sidebar } from '@/components/Sidebar';
 import { Event } from '@/lib/mockData';
 import styles from './calendar.module.css';
 
@@ -36,6 +37,18 @@ export default function CalendarPage() {
     console.log('Clicked event:', event);
   };
 
+  const handleCategoryToggle = (category: string) => {
+    setEnabledCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
+      return next;
+    });
+  };
+
   return (
     <Pane>
       {/* Navigation bar using hoagie-ui */}
@@ -51,13 +64,12 @@ export default function CalendarPage() {
 
       {/* Main content */}
       <div className={styles.container}>
-        {/* Sidebar - will build next */}
+        {/* Sidebar with category filters */}
         <aside className={styles.sidebar}>
-          <div className={styles.sidebarPlaceholder}>
-            <p style={{ fontSize: '14px', color: '#6B7280' }}>
-              ⚙️ Sidebar with category filters coming next!
-            </p>
-          </div>
+          <Sidebar
+            enabledCategories={enabledCategories}
+            onCategoryToggle={handleCategoryToggle}
+          />
         </aside>
 
         {/* Calendar main area */}
