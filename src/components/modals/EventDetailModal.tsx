@@ -4,7 +4,9 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Event, Category } from '@/lib/mockData';
+import { isEventSaved, toggleEventSaved } from '@/lib/savedEvents';
 import styles from './EventDetailModal.module.css';
 
 interface EventDetailModalProps {
@@ -25,12 +27,26 @@ const CATEGORY_LABELS: Record<Category, string> = {
 };
 
 export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalProps) {
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Update saved state when event changes
+  useEffect(() => {
+    if (event) {
+      setIsSaved(isEventSaved(event.id));
+    }
+  }, [event]);
+
   if (!event || !isOpen) return null;
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
+  };
+
+  const handleSaveToggle = () => {
+    const newSavedState = toggleEventSaved(event.id);
+    setIsSaved(newSavedState);
   };
 
   return (
@@ -93,8 +109,11 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
 
         {/* Action Buttons */}
         <div className={styles.actionButtons}>
-          <button className={styles.btnPrimary}>
-            ⭐ Save Event
+          <button
+            className={isSaved ? styles.btnSaved : styles.btnPrimary}
+            onClick={handleSaveToggle}
+          >
+            {isSaved ? '⭐ Saved!' : '⭐ Save Event'}
           </button>
           <button className={styles.btnSecondary}>
             📅 Add to Calendar

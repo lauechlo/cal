@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react';
 import { Category, getEventCountByCategory } from '@/lib/mockData';
+import { getSavedEventCount } from '@/lib/savedEvents';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -28,6 +29,21 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
   const [eventCounts, setEventCounts] = useState<Record<Category, number>>(
     getEventCountByCategory()
   );
+  const [savedCount, setSavedCount] = useState(0);
+
+  // Update saved count on mount and set up interval to refresh
+  useEffect(() => {
+    const updateSavedCount = () => {
+      setSavedCount(getSavedEventCount());
+    };
+
+    updateSavedCount(); // Initial load
+
+    // Refresh every second to pick up changes from modal
+    const interval = setInterval(updateSavedCount, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className={styles.sidebar}>
@@ -51,7 +67,7 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
       <div className={styles.section}>
         <h3 className={styles.sectionHeading}>Quick Actions</h3>
         <button className={styles.quickActionBtn}>
-          ⭐ Saved Events (0)
+          ⭐ Saved Events ({savedCount})
         </button>
         <button className={styles.quickActionBtn}>
           🔔 Category Notifications

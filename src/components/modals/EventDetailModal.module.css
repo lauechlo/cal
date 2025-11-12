@@ -213,7 +213,8 @@
 }
 
 .btnPrimary,
-.btnSecondary {
+.btnSecondary,
+.btnSaved {
   flex: 1;
   padding: 12px;
   border-radius: var(--radius-md);
@@ -232,6 +233,18 @@
 
 .btnPrimary:hover {
   background: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btnSaved {
+  background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.btnSaved:hover {
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
