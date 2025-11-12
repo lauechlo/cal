@@ -24,6 +24,7 @@ export default function CalendarPage() {
   const [view, setView] = useState<View>('month');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [enabledCategories, setEnabledCategories] = useState<Set<string>>(
     new Set(['social', 'academic', 'food', 'arts', 'sports', 'career', 'housing', 'other'])
   );
@@ -82,6 +83,8 @@ export default function CalendarPage() {
             onDateChange={setCurrentDate}
             view={view}
             onViewChange={setView}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
           />
 
           <div className={styles.calendarView}>
@@ -90,6 +93,7 @@ export default function CalendarPage() {
                 date={currentDate}
                 onEventClick={handleEventClick}
                 enabledCategories={enabledCategories}
+                searchQuery={searchQuery}
               />
             )}
             {view === 'week' && (
@@ -97,6 +101,7 @@ export default function CalendarPage() {
                 date={currentDate}
                 onEventClick={handleEventClick}
                 enabledCategories={enabledCategories}
+                searchQuery={searchQuery}
               />
             )}
             {view === 'day' && (
@@ -104,6 +109,7 @@ export default function CalendarPage() {
                 date={currentDate}
                 onEventClick={handleEventClick}
                 enabledCategories={enabledCategories}
+                searchQuery={searchQuery}
               />
             )}
           </div>

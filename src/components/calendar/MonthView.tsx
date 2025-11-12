@@ -18,15 +18,17 @@ import {
   parseISO,
 } from 'date-fns';
 import { Event, getEventsForDate } from '@/lib/mockData';
+import { searchEvents } from '@/lib/searchEvents';
 import styles from './MonthView.module.css';
 
 interface MonthViewProps {
   date: Date;
   onEventClick?: (event: Event) => void;
   enabledCategories?: Set<string>;
+  searchQuery?: string;
 }
 
-export function MonthView({ date, onEventClick, enabledCategories }: MonthViewProps) {
+export function MonthView({ date, onEventClick, enabledCategories, searchQuery = '' }: MonthViewProps) {
   const monthStart = startOfMonth(date);
   const monthEnd = endOfMonth(date);
   const calendarStart = startOfWeek(monthStart);
@@ -53,6 +55,7 @@ export function MonthView({ date, onEventClick, enabledCategories }: MonthViewPr
             isToday={isToday(day)}
             onEventClick={onEventClick}
             enabledCategories={enabledCategories}
+            searchQuery={searchQuery}
           />
         ))}
       </div>
@@ -66,16 +69,22 @@ interface DayCellProps {
   isToday: boolean;
   onEventClick?: (event: Event) => void;
   enabledCategories?: Set<string>;
+  searchQuery?: string;
 }
 
-function DayCell({ date, isCurrentMonth, isToday, onEventClick, enabledCategories }: DayCellProps) {
+function DayCell({ date, isCurrentMonth, isToday, onEventClick, enabledCategories, searchQuery = '' }: DayCellProps) {
   const dateStr = format(date, 'yyyy-MM-dd');
   const events = getEventsForDate(dateStr);
 
-  // Filter events by enabled categories
-  const filteredEvents = events.filter(event =>
+  // Filter events by enabled categories and search query
+  let filteredEvents = events.filter(event =>
     !enabledCategories || enabledCategories.has(event.category)
   );
+
+  // Apply search filter if query exists
+  if (searchQuery) {
+    filteredEvents = searchEvents(filteredEvents, searchQuery);
+  }
 
   const className = [
     styles.dayCell,

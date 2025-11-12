@@ -1,20 +1,29 @@
 import { format, isToday } from 'date-fns';
 import { Event, getEventsForDate } from '@/lib/mockData';
+import { searchEvents } from '@/lib/searchEvents';
 import styles from './DayView.module.css';
 
 interface DayViewProps {
   date: Date;
   onEventClick: (event: Event) => void;
   enabledCategories: Set<string>;
+  searchQuery?: string;
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0-23
 const TIME_SLOT_HEIGHT = 80; // pixels per hour (larger for day view)
 
-export function DayView({ date, onEventClick, enabledCategories }: DayViewProps) {
-  const dayEvents = getEventsForDate(format(date, 'yyyy-MM-dd'))
-    .filter(event => enabledCategories.has(event.category))
-    .sort((a, b) => a.startTime.localeCompare(b.startTime)); // Sort by time
+export function DayView({ date, onEventClick, enabledCategories, searchQuery = '' }: DayViewProps) {
+  let dayEvents = getEventsForDate(format(date, 'yyyy-MM-dd'))
+    .filter(event => enabledCategories.has(event.category));
+
+  // Apply search filter if query exists
+  if (searchQuery) {
+    dayEvents = searchEvents(dayEvents, searchQuery);
+  }
+
+  // Sort by time
+  dayEvents = dayEvents.sort((a, b) => a.startTime.localeCompare(b.startTime));
 
   const formattedDate = format(date, 'EEEE, MMMM d, yyyy');
   const isTodayDate = isToday(date);

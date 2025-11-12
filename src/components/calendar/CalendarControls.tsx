@@ -15,6 +15,8 @@ interface CalendarControlsProps {
   onDateChange: (date: Date) => void;
   view: View;
   onViewChange: (view: View) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }
 
 export function CalendarControls({
@@ -22,6 +24,8 @@ export function CalendarControls({
   onDateChange,
   view,
   onViewChange,
+  searchQuery = '',
+  onSearchChange,
 }: CalendarControlsProps) {
   return (
     <div className={styles.controls}>
@@ -52,6 +56,19 @@ export function CalendarControls({
           </button>
         </div>
       </div>
+
+      {onSearchChange && (
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search events..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+          <span className={styles.searchIcon}>🔍</span>
+        </div>
+      )}
 
       <div className={styles.viewToggle}>
         <button

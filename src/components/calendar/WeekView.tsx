@@ -1,17 +1,19 @@
 import { startOfWeek, endOfWeek, eachDayOfInterval, format, isSameDay, isToday, addDays } from 'date-fns';
 import { Event, getEventsForDate } from '@/lib/mockData';
+import { searchEvents } from '@/lib/searchEvents';
 import styles from './WeekView.module.css';
 
 interface WeekViewProps {
   date: Date;
   onEventClick: (event: Event) => void;
   enabledCategories: Set<string>;
+  searchQuery?: string;
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0-23
 const TIME_SLOT_HEIGHT = 60; // pixels per hour
 
-export function WeekView({ date, onEventClick, enabledCategories }: WeekViewProps) {
+export function WeekView({ date, onEventClick, enabledCategories, searchQuery = '' }: WeekViewProps) {
   const weekStart = startOfWeek(date, { weekStartsOn: 0 }); // Sunday
   const weekEnd = endOfWeek(date, { weekStartsOn: 0 });
   const days = eachDayOfInterval({ start: weekStart, end: weekEnd });
@@ -33,8 +35,13 @@ export function WeekView({ date, onEventClick, enabledCategories }: WeekViewProp
 
         {/* Day columns */}
         {days.map(day => {
-          const dayEvents = getEventsForDate(format(day, 'yyyy-MM-dd'))
+          let dayEvents = getEventsForDate(format(day, 'yyyy-MM-dd'))
             .filter(event => enabledCategories.has(event.category));
+
+          // Apply search filter if query exists
+          if (searchQuery) {
+            dayEvents = searchEvents(dayEvents, searchQuery);
+          }
 
           return (
             <div key={day.toString()} className={styles.dayColumn}>
