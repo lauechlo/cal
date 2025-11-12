@@ -11,6 +11,7 @@ import Nav from '@/lib/hoagie-ui/Nav';
 import { MonthView } from '@/components/calendar/MonthView';
 import { CalendarControls } from '@/components/calendar/CalendarControls';
 import { Sidebar } from '@/components/Sidebar';
+import { EventDetailModal } from '@/components/modals/EventDetailModal';
 import { Event } from '@/lib/mockData';
 import styles from './calendar.module.css';
 
@@ -20,6 +21,7 @@ export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<View>('month');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState<Set<string>>(
     new Set(['social', 'academic', 'food', 'arts', 'sports', 'career', 'housing', 'other'])
   );
@@ -33,8 +35,7 @@ export default function CalendarPage() {
 
   const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
-    // Will open modal in next step
-    console.log('Clicked event:', event);
+    setIsModalOpen(true);
   };
 
   const handleCategoryToggle = (category: string) => {
@@ -102,6 +103,13 @@ export default function CalendarPage() {
           </div>
         </main>
       </div>
+
+      {/* Event Detail Modal */}
+      <EventDetailModal
+        event={selectedEvent}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </Pane>
   );
 }
