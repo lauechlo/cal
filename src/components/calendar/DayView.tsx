@@ -1,6 +1,7 @@
 import { format, isToday } from 'date-fns';
 import { Event, getEventsForDate } from '@/lib/mockData';
 import { searchEvents } from '@/lib/searchEvents';
+import { AdvancedFilters, applyAdvancedFilters } from '@/lib/advancedFilters';
 import styles from './DayView.module.css';
 
 interface DayViewProps {
@@ -8,18 +9,24 @@ interface DayViewProps {
   onEventClick: (event: Event) => void;
   enabledCategories: Set<string>;
   searchQuery?: string;
+  advancedFilters?: AdvancedFilters;
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0-23
 const TIME_SLOT_HEIGHT = 80; // pixels per hour (larger for day view)
 
-export function DayView({ date, onEventClick, enabledCategories, searchQuery = '' }: DayViewProps) {
+export function DayView({ date, onEventClick, enabledCategories, searchQuery = '', advancedFilters }: DayViewProps) {
   let dayEvents = getEventsForDate(format(date, 'yyyy-MM-dd'))
     .filter(event => enabledCategories.has(event.category));
 
   // Apply search filter if query exists
   if (searchQuery) {
     dayEvents = searchEvents(dayEvents, searchQuery);
+  }
+
+  // Apply advanced filters if provided
+  if (advancedFilters) {
+    dayEvents = applyAdvancedFilters(dayEvents, advancedFilters);
   }
 
   // Sort by time

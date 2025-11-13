@@ -100,6 +100,12 @@
 }
 
 /* Search container */
+.searchWrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .searchContainer {
   position: relative;
   display: flex;
@@ -132,4 +138,40 @@
   font-size: 16px;
   pointer-events: none;
   opacity: 0.5;
+}
+
+.advancedSearchBtn {
+  padding: 10px 16px;
+  border: 2px solid #E5E7EB;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.advancedSearchBtn:hover {
+  border-color: #14B8A6;
+  background: #F0FDFA;
+  color: #115E59;
+}
+
+.filterBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: #14B8A6;
+  color: white;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
 }

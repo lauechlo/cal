@@ -14,7 +14,9 @@ import { DayView } from '@/components/calendar/DayView';
 import { CalendarControls } from '@/components/calendar/CalendarControls';
 import { Sidebar } from '@/components/Sidebar';
 import { EventDetailModal } from '@/components/modals/EventDetailModal';
+import { AdvancedSearchModal } from '@/components/modals/AdvancedSearchModal';
 import { Event } from '@/lib/mockData';
+import { AdvancedFilters, DEFAULT_ADVANCED_FILTERS, getActiveFilterCount } from '@/lib/advancedFilters';
 import styles from './calendar.module.css';
 
 type View = 'month' | 'week' | 'day';
@@ -28,6 +30,8 @@ export default function CalendarPage() {
   const [enabledCategories, setEnabledCategories] = useState<Set<string>>(
     new Set(['social', 'academic', 'food', 'arts', 'sports', 'career', 'housing', 'other'])
   );
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilters>(DEFAULT_ADVANCED_FILTERS);
+  const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
 
   // Mock user data (will be replaced with real auth)
   const mockUser = {
@@ -86,6 +90,8 @@ export default function CalendarPage() {
             onViewChange={setView}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
+            onAdvancedSearch={() => setIsAdvancedSearchOpen(true)}
+            activeFilterCount={getActiveFilterCount(advancedFilters)}
           />
 
           <div className={styles.calendarView}>
@@ -95,6 +101,7 @@ export default function CalendarPage() {
                 onEventClick={handleEventClick}
                 enabledCategories={enabledCategories}
                 searchQuery={searchQuery}
+                advancedFilters={advancedFilters}
               />
             )}
             {view === 'week' && (
@@ -103,6 +110,7 @@ export default function CalendarPage() {
                 onEventClick={handleEventClick}
                 enabledCategories={enabledCategories}
                 searchQuery={searchQuery}
+                advancedFilters={advancedFilters}
               />
             )}
             {view === 'day' && (
@@ -111,6 +119,7 @@ export default function CalendarPage() {
                 onEventClick={handleEventClick}
                 enabledCategories={enabledCategories}
                 searchQuery={searchQuery}
+                advancedFilters={advancedFilters}
               />
             )}
           </div>
@@ -122,6 +131,14 @@ export default function CalendarPage() {
         event={selectedEvent}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      {/* Advanced Search Modal */}
+      <AdvancedSearchModal
+        isOpen={isAdvancedSearchOpen}
+        onClose={() => setIsAdvancedSearchOpen(false)}
+        onApply={setAdvancedFilters}
+        currentFilters={advancedFilters}
       />
     </Pane>
   );

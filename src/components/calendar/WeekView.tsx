@@ -1,6 +1,7 @@
 import { startOfWeek, endOfWeek, eachDayOfInterval, format, isSameDay, isToday, addDays } from 'date-fns';
 import { Event, getEventsForDate } from '@/lib/mockData';
 import { searchEvents } from '@/lib/searchEvents';
+import { AdvancedFilters, applyAdvancedFilters } from '@/lib/advancedFilters';
 import styles from './WeekView.module.css';
 
 interface WeekViewProps {
@@ -8,12 +9,13 @@ interface WeekViewProps {
   onEventClick: (event: Event) => void;
   enabledCategories: Set<string>;
   searchQuery?: string;
+  advancedFilters?: AdvancedFilters;
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0-23
 const TIME_SLOT_HEIGHT = 60; // pixels per hour
 
-export function WeekView({ date, onEventClick, enabledCategories, searchQuery = '' }: WeekViewProps) {
+export function WeekView({ date, onEventClick, enabledCategories, searchQuery = '', advancedFilters }: WeekViewProps) {
   const weekStart = startOfWeek(date, { weekStartsOn: 0 }); // Sunday
   const weekEnd = endOfWeek(date, { weekStartsOn: 0 });
   const days = eachDayOfInterval({ start: weekStart, end: weekEnd });
@@ -41,6 +43,11 @@ export function WeekView({ date, onEventClick, enabledCategories, searchQuery = 
           // Apply search filter if query exists
           if (searchQuery) {
             dayEvents = searchEvents(dayEvents, searchQuery);
+          }
+
+          // Apply advanced filters if provided
+          if (advancedFilters) {
+            dayEvents = applyAdvancedFilters(dayEvents, advancedFilters);
           }
 
           return (

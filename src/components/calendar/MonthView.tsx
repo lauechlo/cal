@@ -20,6 +20,7 @@ import {
 import { Event, getEventsForDate } from '@/lib/mockData';
 import { searchEvents } from '@/lib/searchEvents';
 import { isEventInterested } from '@/lib/interestedEvents';
+import { AdvancedFilters, applyAdvancedFilters } from '@/lib/advancedFilters';
 import styles from './MonthView.module.css';
 
 interface MonthViewProps {
@@ -27,9 +28,10 @@ interface MonthViewProps {
   onEventClick?: (event: Event) => void;
   enabledCategories?: Set<string>;
   searchQuery?: string;
+  advancedFilters?: AdvancedFilters;
 }
 
-export function MonthView({ date, onEventClick, enabledCategories, searchQuery = '' }: MonthViewProps) {
+export function MonthView({ date, onEventClick, enabledCategories, searchQuery = '', advancedFilters }: MonthViewProps) {
   const monthStart = startOfMonth(date);
   const monthEnd = endOfMonth(date);
   const calendarStart = startOfWeek(monthStart);
@@ -57,6 +59,7 @@ export function MonthView({ date, onEventClick, enabledCategories, searchQuery =
             onEventClick={onEventClick}
             enabledCategories={enabledCategories}
             searchQuery={searchQuery}
+            advancedFilters={advancedFilters}
           />
         ))}
       </div>
@@ -71,9 +74,10 @@ interface DayCellProps {
   onEventClick?: (event: Event) => void;
   enabledCategories?: Set<string>;
   searchQuery?: string;
+  advancedFilters?: AdvancedFilters;
 }
 
-function DayCell({ date, isCurrentMonth, isToday, onEventClick, enabledCategories, searchQuery = '' }: DayCellProps) {
+function DayCell({ date, isCurrentMonth, isToday, onEventClick, enabledCategories, searchQuery = '', advancedFilters }: DayCellProps) {
   const dateStr = format(date, 'yyyy-MM-dd');
   const events = getEventsForDate(dateStr);
 
@@ -85,6 +89,11 @@ function DayCell({ date, isCurrentMonth, isToday, onEventClick, enabledCategorie
   // Apply search filter if query exists
   if (searchQuery) {
     filteredEvents = searchEvents(filteredEvents, searchQuery);
+  }
+
+  // Apply advanced filters if provided
+  if (advancedFilters) {
+    filteredEvents = applyAdvancedFilters(filteredEvents, advancedFilters);
   }
 
   const className = [

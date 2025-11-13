@@ -17,6 +17,8 @@ interface CalendarControlsProps {
   onViewChange: (view: View) => void;
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
+  onAdvancedSearch?: () => void;
+  activeFilterCount?: number;
 }
 
 export function CalendarControls({
@@ -26,6 +28,8 @@ export function CalendarControls({
   onViewChange,
   searchQuery = '',
   onSearchChange,
+  onAdvancedSearch,
+  activeFilterCount = 0,
 }: CalendarControlsProps) {
   return (
     <div className={styles.controls}>
@@ -58,15 +62,29 @@ export function CalendarControls({
       </div>
 
       {onSearchChange && (
-        <div className={styles.searchContainer}>
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Search events..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-          <span className={styles.searchIcon}>🔍</span>
+        <div className={styles.searchWrapper}>
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              className={styles.searchInput}
+              placeholder="Search events..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+            <span className={styles.searchIcon}>🔍</span>
+          </div>
+          {onAdvancedSearch && (
+            <button
+              className={styles.advancedSearchBtn}
+              onClick={onAdvancedSearch}
+              title="Advanced search"
+            >
+              🎛️ Filters
+              {activeFilterCount > 0 && (
+                <span className={styles.filterBadge}>{activeFilterCount}</span>
+              )}
+            </button>
+          )}
         </div>
       )}
 
