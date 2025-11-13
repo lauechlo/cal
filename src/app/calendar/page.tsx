@@ -62,6 +62,7 @@ export default function CalendarPage() {
         beta={true}
         tabs={[
           { title: 'Calendar', href: '/calendar' },
+          { title: 'Saved Events', href: '/saved' },
           { title: 'Archives', href: '/archives' },
         ]}
       />

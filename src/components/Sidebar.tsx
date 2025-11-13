@@ -5,6 +5,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Category, getEventCountByCategory, mockEvents } from '@/lib/mockData';
 import { getSavedEventCount } from '@/lib/savedEvents';
 import { CategoryNotificationsModal } from './modals/CategoryNotificationsModal';
@@ -91,9 +92,9 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
       {/* Quick Actions section */}
       <div className={styles.section}>
         <h3 className={styles.sectionHeading}>Quick Actions</h3>
-        <button className={styles.quickActionBtn}>
+        <Link href="/saved" className={styles.quickActionBtn}>
           ⭐ Saved Events ({savedCount})
-        </button>
+        </Link>
         <button
           className={styles.quickActionBtn}
           onClick={() => setIsNotificationsModalOpen(true)}

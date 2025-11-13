@@ -107,6 +107,7 @@ export default function ArchivesPage() {
     <div className={styles.page}>
       <Nav name="calendar" user={mockUser} tabs={[
         { name: 'Calendar', href: '/calendar' },
+        { name: 'Saved Events', href: '/saved' },
         { name: 'Archives', href: '/archives' }
       ]} />
 
