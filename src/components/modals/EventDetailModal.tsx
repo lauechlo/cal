@@ -9,6 +9,8 @@ import { Event, Category } from '@/lib/mockData';
 import { isEventSaved, toggleEventSaved } from '@/lib/savedEvents';
 import { isEventInterested, toggleEventInterested } from '@/lib/interestedEvents';
 import { exportEvent } from '@/lib/icsExport';
+import { copyEventLink, shareEventEmail, shareEventNative, isNativeShareSupported } from '@/lib/shareEvent';
+import { getReminderSettings, toggleReminders, areNotificationsEnabled, scheduleReminders } from '@/lib/eventReminders';
 import styles from './EventDetailModal.module.css';
 
 interface EventDetailModalProps {
@@ -31,6 +33,8 @@ const CATEGORY_LABELS: Record<Category, string> = {
 export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalProps) {
   const [isSaved, setIsSaved] = useState(false);
   const [isInterested, setIsInterested] = useState(false);
+  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+  const [remindersEnabled, setRemindersEnabled] = useState(false);
 
   // Update saved and interested state when event changes
   useEffect(() => {
@@ -39,6 +43,12 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
       setIsInterested(isEventInterested(event.id));
     }
   }, [event]);
+
+  // Check if reminders are enabled
+  useEffect(() => {
+    const settings = getReminderSettings();
+    setRemindersEnabled(settings.enableNotifications && areNotificationsEnabled());
+  }, []);
 
   if (!event || !isOpen) return null;
 
@@ -56,10 +66,40 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
   const handleInterestedToggle = () => {
     const newInterestedState = toggleEventInterested(event.id);
     setIsInterested(newInterestedState);
+
+    // Schedule reminders if enabled and event was marked as interested
+    if (newInterestedState && remindersEnabled) {
+      scheduleReminders();
+    }
+  };
+
+  const handleToggleReminders = async () => {
+    const newState = await toggleReminders();
+    setRemindersEnabled(newState);
+
+    if (newState) {
+      scheduleReminders();
+    }
   };
 
   const handleAddToCalendar = () => {
     exportEvent(event);
+  };
+
+  const handleCopyLink = async () => {
+    const success = await copyEventLink(event);
+    if (success) {
+      setShowCopiedMessage(true);
+      setTimeout(() => setShowCopiedMessage(false), 2000);
+    }
+  };
+
+  const handleShareEmail = () => {
+    shareEventEmail(event);
+  };
+
+  const handleShareNative = async () => {
+    await shareEventNative(event);
   };
 
   return (
@@ -97,6 +137,28 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
             {event.interestedCount} people interested
           </span>
         </div>
+
+        {/* Reminder Preferences */}
+        {isInterested && (
+          <div className={styles.reminderSection}>
+            <label className={styles.reminderToggle}>
+              <input
+                type="checkbox"
+                checked={remindersEnabled}
+                onChange={handleToggleReminders}
+                className={styles.reminderCheckbox}
+              />
+              <span className={styles.reminderLabel}>
+                🔔 Remind me about this event (1 day before & 1 hour before)
+              </span>
+            </label>
+            {!areNotificationsEnabled() && remindersEnabled && (
+              <div className={styles.reminderHint}>
+                Please allow notifications in your browser to receive reminders
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Original HoagieMail */}
         <div className={styles.emailSection}>
@@ -137,6 +199,24 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
           <button className={styles.btnSecondary} onClick={handleAddToCalendar}>
             📅 Add to Calendar
           </button>
+        </div>
+
+        {/* Share Section */}
+        <div className={styles.shareSection}>
+          <div className={styles.shareSectionTitle}>Share this event</div>
+          <div className={styles.shareButtons}>
+            <button className={styles.shareBtn} onClick={handleCopyLink}>
+              {showCopiedMessage ? '✓ Copied!' : '🔗 Copy Link'}
+            </button>
+            <button className={styles.shareBtn} onClick={handleShareEmail}>
+              ✉️ Email
+            </button>
+            {isNativeShareSupported() && (
+              <button className={styles.shareBtn} onClick={handleShareNative}>
+                📤 Share
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Report Link */}

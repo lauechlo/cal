@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { Category, getEventCountByCategory, mockEvents } from '@/lib/mockData';
 import { getSavedEventCount } from '@/lib/savedEvents';
 import { CategoryNotificationsModal } from './modals/CategoryNotificationsModal';
+import { ExportCalendarModal } from './modals/ExportCalendarModal';
 import { exportEvents } from '@/lib/icsExport';
 import styles from './Sidebar.module.css';
 
@@ -33,6 +34,7 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
   );
   const [savedCount, setSavedCount] = useState(0);
   const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [notificationCategories, setNotificationCategories] = useState<Set<string>>(new Set());
 
   // Load notification preferences from localStorage
@@ -68,11 +70,6 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
     localStorage.setItem('categoryNotifications', JSON.stringify(Array.from(enabledCategories)));
   };
 
-  const handleExportCalendar = () => {
-    // Export all events to .ics file
-    exportEvents(mockEvents, 'HoagieCalendar_Events');
-  };
-
   return (
     <div className={styles.sidebar}>
       {/* Categories section */}
@@ -103,17 +100,23 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
         >
           🔔 Category Notifications ({notificationCategories.size})
         </button>
-        <button className={styles.quickActionBtn} onClick={handleExportCalendar}>
+        <button className={styles.quickActionBtn} onClick={() => setIsExportModalOpen(true)}>
           📤 Export Calendar
         </button>
       </div>
 
-      {/* Category Notifications Modal */}
+      {/* Modals */}
       <CategoryNotificationsModal
         isOpen={isNotificationsModalOpen}
         onClose={() => setIsNotificationsModalOpen(false)}
         onSave={handleSaveNotifications}
         initialCategories={notificationCategories}
+      />
+
+      <ExportCalendarModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        enabledCategories={enabledCategories as Set<Category>}
       />
     </div>
   );

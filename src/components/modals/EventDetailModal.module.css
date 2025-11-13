@@ -137,6 +137,43 @@
   color: var(--color-text);
 }
 
+.reminderSection {
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #FEF3C7;
+  border-radius: var(--radius-md);
+  border-left: 4px solid #F59E0B;
+}
+
+.reminderToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.reminderCheckbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #F59E0B;
+}
+
+.reminderLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #92400E;
+  flex: 1;
+}
+
+.reminderHint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #92400E;
+  font-style: italic;
+  padding-left: 28px;
+}
+
 .emailSection {
   background: #F9FAFB;
   padding: 16px;
@@ -271,6 +308,53 @@
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
+}
+
+.shareSection {
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #F9FAFB;
+  border-radius: var(--radius-md);
+}
+
+.shareSectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shareButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.shareBtn {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+
+.shareBtn:hover {
+  background: #F3F4F6;
+  border-color: #9CA3AF;
+  transform: translateY(-1px);
+}
+
+.shareBtn:active {
+  transform: translateY(0);
 }
 
 .reportSection {
