@@ -5,14 +5,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Category, getEventCountByCategory } from '@/lib/mockData';
+import { Category, Event, getEventCountByCategory } from '@/lib/mockData';
 import { getSavedEventCount } from '@/lib/savedEvents';
 import { CategoryNotificationsModal } from './modals/CategoryNotificationsModal';
+import { SavedEventsModal } from './modals/SavedEventsModal';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
   enabledCategories: Set<string>;
   onCategoryToggle: (category: string) => void;
+  onEventClick: (event: Event) => void;
 }
 
 const CATEGORIES: Array<{ id: Category; label: string; color: string }> = [
@@ -26,12 +28,13 @@ const CATEGORIES: Array<{ id: Category; label: string; color: string }> = [
   { id: 'other', label: 'Other', color: '#6B7280' },
 ];
 
-export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
+export function Sidebar({ enabledCategories, onCategoryToggle, onEventClick }: SidebarProps) {
   const [eventCounts, setEventCounts] = useState<Record<Category, number>>(
     getEventCountByCategory()
   );
   const [savedCount, setSavedCount] = useState(0);
   const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
+  const [isSavedEventsModalOpen, setIsSavedEventsModalOpen] = useState(false);
   const [notificationCategories, setNotificationCategories] = useState<Set<string>>(new Set());
 
   // Load notification preferences from localStorage
@@ -88,7 +91,10 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
       {/* Quick Actions section */}
       <div className={styles.section}>
         <h3 className={styles.sectionHeading}>Quick Actions</h3>
-        <button className={styles.quickActionBtn}>
+        <button
+          className={styles.quickActionBtn}
+          onClick={() => setIsSavedEventsModalOpen(true)}
+        >
           ⭐ Saved Events ({savedCount})
         </button>
         <button
@@ -108,6 +114,13 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
         onClose={() => setIsNotificationsModalOpen(false)}
         onSave={handleSaveNotifications}
         initialCategories={notificationCategories}
+      />
+
+      {/* Saved Events Modal */}
+      <SavedEventsModal
+        isOpen={isSavedEventsModalOpen}
+        onClose={() => setIsSavedEventsModalOpen(false)}
+        onEventClick={onEventClick}
       />
     </div>
   );
