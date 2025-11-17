@@ -5,8 +5,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Category, Event, getEventCountByCategory } from '@/lib/mockData';
+import { Category, Event, getEventCountByCategory, mockEvents } from '@/lib/mockData';
 import { getSavedEventCount } from '@/lib/savedEvents';
+import { searchEvents } from '@/lib/searchEvents';
+import { exportEventsToIcs, generateFilename } from '@/lib/exportCalendar';
 import { CategoryNotificationsModal } from './modals/CategoryNotificationsModal';
 import { SavedEventsModal } from './modals/SavedEventsModal';
 import styles from './Sidebar.module.css';
@@ -15,6 +17,8 @@ interface SidebarProps {
   enabledCategories: Set<string>;
   onCategoryToggle: (category: string) => void;
   onEventClick: (event: Event) => void;
+  searchQuery?: string;
+  currentDate?: Date;
 }
 
 const CATEGORIES: Array<{ id: Category; label: string; color: string }> = [
@@ -28,7 +32,13 @@ const CATEGORIES: Array<{ id: Category; label: string; color: string }> = [
   { id: 'other', label: 'Other', color: '#6B7280' },
 ];
 
-export function Sidebar({ enabledCategories, onCategoryToggle, onEventClick }: SidebarProps) {
+export function Sidebar({
+  enabledCategories,
+  onCategoryToggle,
+  onEventClick,
+  searchQuery = '',
+  currentDate = new Date()
+}: SidebarProps) {
   const [eventCounts, setEventCounts] = useState<Record<Category, number>>(
     getEventCountByCategory()
   );
@@ -70,6 +80,30 @@ export function Sidebar({ enabledCategories, onCategoryToggle, onEventClick }: S
     localStorage.setItem('categoryNotifications', JSON.stringify(Array.from(enabledCategories)));
   };
 
+  const handleExportCalendar = () => {
+    // Get all events
+    let events = mockEvents;
+
+    // Filter by enabled categories
+    events = events.filter(event => enabledCategories.has(event.category));
+
+    // Filter by search query if present
+    if (searchQuery) {
+      events = searchEvents(events, searchQuery);
+    }
+
+    // Generate filename based on context
+    const filename = generateFilename('filtered', currentDate);
+
+    // Export to .ics file
+    const success = exportEventsToIcs(events, filename);
+
+    if (success) {
+      // Optional: Show success message (could be a toast notification)
+      console.log(`Exported ${events.length} events to ${filename}`);
+    }
+  };
+
   return (
     <div className={styles.sidebar}>
       {/* Categories section */}
@@ -103,7 +137,10 @@ export function Sidebar({ enabledCategories, onCategoryToggle, onEventClick }: S
         >
           🔔 Category Notifications ({notificationCategories.size})
         </button>
-        <button className={styles.quickActionBtn}>
+        <button
+          className={styles.quickActionBtn}
+          onClick={handleExportCalendar}
+        >
           📤 Export Calendar
         </button>
       </div>

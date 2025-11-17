@@ -74,6 +74,8 @@ export default function CalendarPage() {
             enabledCategories={enabledCategories}
             onCategoryToggle={handleCategoryToggle}
             onEventClick={handleEventClick}
+            searchQuery={searchQuery}
+            currentDate={currentDate}
           />
         </aside>
 
