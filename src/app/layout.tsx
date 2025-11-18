@@ -1,9 +1,10 @@
 /**
  * Root layout for HoagieCalendar
- * Server component that provides base HTML structure
+ * Provides base HTML structure and hoagie-ui Layout wrapper
  */
 
 import { ReactNode } from 'react';
+import Layout from '@/lib/hoagie-ui/Layout';
 import '@/lib/hoagie-ui/theme.css';
 import '@/styles/globals.css';
 import '@/styles/variables.css';
@@ -21,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ margin: 0, padding: 0 }}>
-        {children}
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
