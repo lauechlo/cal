@@ -1,10 +1,10 @@
 /**
  * Root layout for HoagieCalendar
  * Server component that provides base HTML structure
+ * IMPORTANT: This must remain a server component for Next.js App Router to work
  */
 
 import { ReactNode } from 'react';
-import Layout from '@/lib/hoagie-ui/Layout';
 import '@/lib/hoagie-ui/theme.css';
 import '@/styles/globals.css';
 import '@/styles/variables.css';
@@ -22,9 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ margin: 0, padding: 0 }}>
-        <Layout>
-          {children}
-        </Layout>
+        {children}
       </body>
     </html>
   );
