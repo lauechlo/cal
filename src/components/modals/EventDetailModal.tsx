@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Event, Category } from '@/lib/mockData';
 import { isEventSaved, toggleEventSaved } from '@/lib/savedEvents';
+import { ReportEventModal } from './ReportEventModal';
 import styles from './EventDetailModal.module.css';
 
 interface EventDetailModalProps {
@@ -29,6 +30,7 @@ const CATEGORY_LABELS: Record<Category, string> = {
 
 export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalProps) {
   const [isSaved, setIsSaved] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   // Update saved state when event changes
   useEffect(() => {
@@ -131,14 +133,19 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
         <div className={styles.reportSection}>
           <a href="#" className={styles.reportLink} onClick={(e) => {
             e.preventDefault();
-            toast('Report functionality coming soon!', {
-              icon: '🚩',
-            });
+            setIsReportModalOpen(true);
           }}>
             🚩 Report this event
           </a>
         </div>
       </div>
+
+      {/* Report Modal */}
+      <ReportEventModal
+        event={event}
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+      />
     </div>
   );
 }
