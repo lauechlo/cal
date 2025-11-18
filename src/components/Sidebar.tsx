@@ -33,16 +33,20 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
   const [savedCount, setSavedCount] = useState(0);
   const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
   const [notificationCategories, setNotificationCategories] = useState<Set<string>>(new Set());
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Load notification preferences from localStorage
+  // Load notification preferences from localStorage after mounting
   useEffect(() => {
-    const stored = localStorage.getItem('categoryNotifications');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setNotificationCategories(new Set(parsed));
-      } catch (e) {
-        console.error('Failed to parse notification preferences:', e);
+    setIsMounted(true);
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('categoryNotifications');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          setNotificationCategories(new Set(parsed));
+        } catch (e) {
+          console.error('Failed to parse notification preferences:', e);
+        }
       }
     }
   }, []);
@@ -64,7 +68,9 @@ export function Sidebar({ enabledCategories, onCategoryToggle }: SidebarProps) {
   const handleSaveNotifications = (enabledCategories: Set<string>) => {
     setNotificationCategories(enabledCategories);
     // Save to localStorage
-    localStorage.setItem('categoryNotifications', JSON.stringify(Array.from(enabledCategories)));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('categoryNotifications', JSON.stringify(Array.from(enabledCategories)));
+    }
   };
 
   return (
