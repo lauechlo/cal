@@ -17,6 +17,7 @@ interface CalendarControlsProps {
   onViewChange: (view: View) => void;
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
+  onCreateEvent?: () => void;
 }
 
 export function CalendarControls({
@@ -26,6 +27,7 @@ export function CalendarControls({
   onViewChange,
   searchQuery = '',
   onSearchChange,
+  onCreateEvent,
 }: CalendarControlsProps) {
   return (
     <div className={styles.controls}>
@@ -57,18 +59,30 @@ export function CalendarControls({
         </div>
       </div>
 
-      {onSearchChange && (
-        <div className={styles.searchContainer}>
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Search events..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-          <span className={styles.searchIcon}>🔍</span>
-        </div>
-      )}
+      <div className={styles.controlsCenter}>
+        {onSearchChange && (
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              className={styles.searchInput}
+              placeholder="Search events..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+            <span className={styles.searchIcon}>🔍</span>
+          </div>
+        )}
+
+        {onCreateEvent && (
+          <button
+            className={styles.createBtn}
+            onClick={onCreateEvent}
+            title="Create new event"
+          >
+            ✨ Create Event
+          </button>
+        )}
+      </div>
 
       <div className={styles.viewToggle}>
         <button
