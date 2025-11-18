@@ -7,7 +7,6 @@
 
 import { useState } from 'react';
 import { Pane } from 'evergreen-ui';
-import Layout from '@/lib/hoagie-ui/Layout';
 import Nav from '@/lib/hoagie-ui/Nav';
 import { MonthView } from '@/components/calendar/MonthView';
 import { WeekView } from '@/components/calendar/WeekView';
@@ -55,76 +54,74 @@ export default function CalendarPage() {
   };
 
   return (
-    <Layout>
-      <Pane>
-        {/* Navigation bar using hoagie-ui */}
-        <Nav
-          name="calendar"
-          user={mockUser}
-          beta={true}
-          tabs={[
-            { title: 'Calendar', href: '/calendar' },
-            { title: 'Archives', href: '/archives' },
-          ]}
-        />
+    <Pane>
+      {/* Navigation bar using hoagie-ui */}
+      <Nav
+        name="calendar"
+        user={mockUser}
+        beta={true}
+        tabs={[
+          { title: 'Calendar', href: '/calendar' },
+          { title: 'Archives', href: '/archives' },
+        ]}
+      />
 
-        {/* Main content */}
-        <div className={styles.container}>
-          {/* Sidebar with category filters */}
-          <aside className={styles.sidebar}>
-            <Sidebar
-              enabledCategories={enabledCategories}
-              onCategoryToggle={handleCategoryToggle}
-            />
-          </aside>
+      {/* Main content */}
+      <div className={styles.container}>
+        {/* Sidebar with category filters */}
+        <aside className={styles.sidebar}>
+          <Sidebar
+            enabledCategories={enabledCategories}
+            onCategoryToggle={handleCategoryToggle}
+          />
+        </aside>
 
-          {/* Calendar main area */}
-          <main className={styles.calendarMain}>
-            <CalendarControls
-              currentDate={currentDate}
-              onDateChange={setCurrentDate}
-              view={view}
-              onViewChange={setView}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-            />
+        {/* Calendar main area */}
+        <main className={styles.calendarMain}>
+          <CalendarControls
+            currentDate={currentDate}
+            onDateChange={setCurrentDate}
+            view={view}
+            onViewChange={setView}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
 
-            <div className={styles.calendarView}>
-              {view === 'month' && (
-                <MonthView
-                  date={currentDate}
-                  onEventClick={handleEventClick}
-                  enabledCategories={enabledCategories}
-                  searchQuery={searchQuery}
-                />
-              )}
-              {view === 'week' && (
-                <WeekView
-                  date={currentDate}
-                  onEventClick={handleEventClick}
-                  enabledCategories={enabledCategories}
-                  searchQuery={searchQuery}
-                />
-              )}
-              {view === 'day' && (
-                <DayView
-                  date={currentDate}
-                  onEventClick={handleEventClick}
-                  enabledCategories={enabledCategories}
-                  searchQuery={searchQuery}
-                />
-              )}
-            </div>
-          </main>
-        </div>
+          <div className={styles.calendarView}>
+            {view === 'month' && (
+              <MonthView
+                date={currentDate}
+                onEventClick={handleEventClick}
+                enabledCategories={enabledCategories}
+                searchQuery={searchQuery}
+              />
+            )}
+            {view === 'week' && (
+              <WeekView
+                date={currentDate}
+                onEventClick={handleEventClick}
+                enabledCategories={enabledCategories}
+                searchQuery={searchQuery}
+              />
+            )}
+            {view === 'day' && (
+              <DayView
+                date={currentDate}
+                onEventClick={handleEventClick}
+                enabledCategories={enabledCategories}
+                searchQuery={searchQuery}
+              />
+            )}
+          </div>
+        </main>
+      </div>
 
-        {/* Event Detail Modal */}
-        <EventDetailModal
-          event={selectedEvent}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      </Pane>
-    </Layout>
+      {/* Event Detail Modal */}
+      <EventDetailModal
+        event={selectedEvent}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </Pane>
   );
 }
