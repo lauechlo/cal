@@ -31,6 +31,18 @@
   margin: 0;
 }
 
+.eventCount {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  font-family: var(--font-body);
+}
+
+.noResults {
+  color: #EF4444;
+  font-weight: 500;
+}
+
 .navButtons {
   display: flex;
   gap: 4px;

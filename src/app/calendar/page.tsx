@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Pane } from 'evergreen-ui';
 import Nav from '@/lib/hoagie-ui/Nav';
 import { MonthView } from '@/components/calendar/MonthView';
@@ -15,7 +15,8 @@ import { CalendarControls } from '@/components/calendar/CalendarControls';
 import { Sidebar } from '@/components/Sidebar';
 import { EventDetailModal } from '@/components/modals/EventDetailModal';
 import { CreateEventModal } from '@/components/modals/CreateEventModal';
-import { Event } from '@/lib/mockData';
+import { Event, mockEvents } from '@/lib/mockData';
+import { searchEvents } from '@/lib/searchEvents';
 import styles from './calendar.module.css';
 
 type View = 'month' | 'week' | 'day';
@@ -61,6 +62,21 @@ export default function CalendarPage() {
     setRefreshKey(prev => prev + 1);
   };
 
+  // Calculate filtered event count
+  const filteredEventCount = useMemo(() => {
+    let events = mockEvents;
+
+    // Filter by enabled categories
+    events = events.filter(event => enabledCategories.has(event.category));
+
+    // Filter by search query
+    if (searchQuery) {
+      events = searchEvents(events, searchQuery);
+    }
+
+    return events.length;
+  }, [enabledCategories, searchQuery, refreshKey]);
+
   return (
     <Pane>
       {/* Navigation bar using hoagie-ui */}
@@ -97,6 +113,7 @@ export default function CalendarPage() {
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             onCreateEvent={() => setIsCreateModalOpen(true)}
+            eventCount={filteredEventCount}
           />
 
           <div className={styles.calendarView} key={refreshKey}>

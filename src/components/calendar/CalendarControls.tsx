@@ -18,6 +18,7 @@ interface CalendarControlsProps {
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
   onCreateEvent?: () => void;
+  eventCount?: number;
 }
 
 export function CalendarControls({
@@ -28,13 +29,25 @@ export function CalendarControls({
   searchQuery = '',
   onSearchChange,
   onCreateEvent,
+  eventCount,
 }: CalendarControlsProps) {
   return (
     <div className={styles.controls}>
       <div className={styles.controlsLeft}>
-        <h2 className={styles.monthTitle}>
-          {format(currentDate, 'MMMM yyyy')}
-        </h2>
+        <div>
+          <h2 className={styles.monthTitle}>
+            {format(currentDate, 'MMMM yyyy')}
+          </h2>
+          {eventCount !== undefined && (
+            <div className={styles.eventCount}>
+              {eventCount === 0 ? (
+                <span className={styles.noResults}>No events found</span>
+              ) : (
+                <>Showing {eventCount} event{eventCount !== 1 ? 's' : ''}</>
+              )}
+            </div>
+          )}
+        </div>
         <div className={styles.navButtons}>
           <button
             className={styles.navBtn}
