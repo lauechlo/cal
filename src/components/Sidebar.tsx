@@ -95,13 +95,8 @@ export function Sidebar({
     // Generate filename based on context
     const filename = generateFilename('filtered', currentDate);
 
-    // Export to .ics file
-    const success = exportEventsToIcs(events, filename);
-
-    if (success) {
-      // Optional: Show success message (could be a toast notification)
-      console.log(`Exported ${events.length} events to ${filename}`);
-    }
+    // Export to .ics file (toast notification handled in exportEventsToIcs)
+    exportEventsToIcs(events, filename);
   };
 
   return (

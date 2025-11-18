@@ -4,6 +4,7 @@
  */
 
 import { createEvents, EventAttributes } from 'ics';
+import toast from 'react-hot-toast';
 import { Event } from './mockData';
 
 /**
@@ -71,7 +72,7 @@ export function exportEventsToIcs(
   filename: string = 'hoagiecalendar.ics'
 ): boolean {
   if (events.length === 0) {
-    alert('No events to export. Try adjusting your filters or saving some events!');
+    toast.error('No events to export. Try adjusting your filters!');
     return false;
   }
 
@@ -84,13 +85,13 @@ export function exportEventsToIcs(
 
     if (error) {
       console.error('Error generating .ics file:', error);
-      alert('Failed to generate calendar file. Please try again.');
+      toast.error('Failed to generate calendar file. Please try again.');
       return false;
     }
 
     if (!value) {
       console.error('No .ics content generated');
-      alert('Failed to generate calendar file. Please try again.');
+      toast.error('Failed to generate calendar file. Please try again.');
       return false;
     }
 
@@ -108,10 +109,13 @@ export function exportEventsToIcs(
     // Clean up
     URL.revokeObjectURL(url);
 
+    // Show success message
+    toast.success(`📅 Exported ${events.length} event${events.length !== 1 ? 's' : ''}`);
+
     return true;
   } catch (error) {
     console.error('Error exporting calendar:', error);
-    alert('Failed to export calendar. Please try again.');
+    toast.error('Failed to export calendar. Please try again.');
     return false;
   }
 }

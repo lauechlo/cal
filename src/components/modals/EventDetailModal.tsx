@@ -5,6 +5,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { Event, Category } from '@/lib/mockData';
 import { isEventSaved, toggleEventSaved } from '@/lib/savedEvents';
 import styles from './EventDetailModal.module.css';
@@ -47,6 +48,12 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
   const handleSaveToggle = () => {
     const newSavedState = toggleEventSaved(event.id);
     setIsSaved(newSavedState);
+
+    if (newSavedState) {
+      toast.success('⭐ Event saved!');
+    } else {
+      toast.success('Event unsaved');
+    }
   };
 
   return (
@@ -124,7 +131,9 @@ export function EventDetailModal({ event, isOpen, onClose }: EventDetailModalPro
         <div className={styles.reportSection}>
           <a href="#" className={styles.reportLink} onClick={(e) => {
             e.preventDefault();
-            alert('Report functionality coming soon!');
+            toast('Report functionality coming soon!', {
+              icon: '🚩',
+            });
           }}>
             🚩 Report this event
           </a>
