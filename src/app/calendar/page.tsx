@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { Pane } from 'evergreen-ui';
-import Layout from '@/lib/hoagie-ui/Layout';
+import { PageLayout } from '@/components/PageLayout';
 import Nav from '@/lib/hoagie-ui/Nav';
 import { MonthView } from '@/components/calendar/MonthView';
 import { WeekView } from '@/components/calendar/WeekView';
@@ -55,7 +55,7 @@ export default function CalendarPage() {
   };
 
   return (
-    <Layout>
+    <PageLayout>
       <Pane>
         {/* Navigation bar using hoagie-ui */}
         <Nav
@@ -125,6 +125,6 @@ export default function CalendarPage() {
           onClose={() => setIsModalOpen(false)}
         />
       </Pane>
-    </Layout>
+    </PageLayout>
   );
 }

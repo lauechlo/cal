@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f7ff; /* blue100 from evergreen-ui theme */
+}
+
+.content {
+  flex: 1;
+}
