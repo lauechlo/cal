@@ -5,6 +5,7 @@
  */
 
 import { ReactNode } from 'react';
+import Footer from '@/lib/hoagie-ui/Footer';
 import '@/lib/hoagie-ui/theme.css';
 import '@/styles/globals.css';
 import '@/styles/variables.css';
@@ -21,8 +22,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0 }}>
-        {children}
+      <body style={{
+        margin: 0,
+        padding: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        backgroundColor: '#f0f7ff'
+      }}>
+        <div style={{ flex: 1 }}>
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   );
