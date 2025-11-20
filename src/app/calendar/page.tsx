@@ -5,8 +5,6 @@
 
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import { useState } from 'react';
 import { Pane } from 'evergreen-ui';
 import Nav from '@/lib/hoagie-ui/Nav';
