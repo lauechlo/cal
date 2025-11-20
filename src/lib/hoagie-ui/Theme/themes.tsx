@@ -9,6 +9,7 @@ export const hoagieUI = {
     title: 'blue',
     colors: {
         // ...defTheme.colors,
+        white: '#FFFFFF',
         gray900: '#000000',
         gray800: '#343434',
         gray700: '#808080',
@@ -153,38 +154,31 @@ export const hoagieUI = {
             icon: '#D14343',
         },
     },
-    radii: {
-        0: '0px',
-        1: '4px',
-        2: '8px',
-    },
-    shadows: {
-        0: '0 0 1px rgba(100, 100, 100, 0.3)',
-        1: '0 0 1px rgba(100, 100, 100, 0.3), 0 2px 4px -2px rgba(100, 100, 100, 0.47)',
-        2: '0 0 1px rgba(100, 100, 100, 0.3), 0 5px 8px -4px rgba(100, 100, 100, 0.47)',
-        3: '0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)',
-        4: '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
-        focusRing: '0 0 0 2px #D6E0FF',
-    },
+    radii: ['0px', '4px', '8px'],
+    shadows: Object.assign(
+        [
+            '0 0 1px rgba(100, 100, 100, 0.3)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 2px 4px -2px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 5px 8px -4px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
+        ],
+        { focusRing: '0 0 0 2px #D6E0FF' }
+    ),
     fontFamilies: {
         display:
             '"Inter", "SF UI Display", -apple-system, BlinkMacSystemFont, "Segoe UI",Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         ui: '"Inter", "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         mono: '"JetBrains Mono", "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Droid Sans Mono", "Source Code Pro", monospace',
     },
-    fontSizes: {
-        0: '10px',
-        1: '12px',
-        2: '14px',
-        3: '16px',
-        4: '18px',
-        5: '20px',
-        6: '24px',
-        7: '32px',
-        body: '14px',
-        caption: '10px',
-        heading: '16px',
-    },
+    fontSizes: Object.assign(
+        ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '32px'],
+        {
+            body: '14px',
+            caption: '10px',
+            heading: '16px',
+        }
+    ),
     fontWeights: {
         light: 300,
         normal: 400,
@@ -259,14 +253,16 @@ export const hoagiePurple = {
             icon: '#D14343',
         },
     },
-    shadows: {
-        0: '0 0 1px rgba(100, 100, 100, 0.3)',
-        1: '0 0 1px rgba(100, 100, 100, 0.3), 0 2px 4px -2px rgba(100, 100, 100, 0.47)',
-        2: '0 0 1px rgba(100, 100, 100, 0.3), 0 5px 8px -4px rgba(100, 100, 100, 0.47)',
-        3: '0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)',
-        4: '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
-        focusRing: '0 0 0 2px #E9DDFE',
-    },
+    shadows: Object.assign(
+        [
+            '0 0 1px rgba(100, 100, 100, 0.3)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 2px 4px -2px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 5px 8px -4px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
+        ],
+        { focusRing: '0 0 0 2px #E9DDFE' }
+    ),
 };
 
 export const hoagieOrange = {
@@ -330,12 +326,14 @@ export const hoagieOrange = {
             icon: '#D14343',
         },
     },
-    shadows: {
-        0: '0 0 1px rgba(100, 100, 100, 0.3)',
-        1: '0 0 1px rgba(100, 100, 100, 0.3), 0 2px 4px -2px rgba(100, 100, 100, 0.47)',
-        2: '0 0 1px rgba(100, 100, 100, 0.3), 0 5px 8px -4px rgba(100, 100, 100, 0.47)',
-        3: '0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)',
-        4: '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
-        focusRing: '0 0 0 2px #FFE3C6',
-    },
+    shadows: Object.assign(
+        [
+            '0 0 1px rgba(100, 100, 100, 0.3)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 2px 4px -2px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 5px 8px -4px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)',
+            '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
+        ],
+        { focusRing: '0 0 0 2px #FFE3C6' }
+    ),
 };

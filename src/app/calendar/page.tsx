@@ -5,9 +5,10 @@
 
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import { Pane } from 'evergreen-ui';
-import Layout from '@/lib/hoagie-ui/Layout';
 import Nav from '@/lib/hoagie-ui/Nav';
 import { MonthView } from '@/components/calendar/MonthView';
 import { WeekView } from '@/components/calendar/WeekView';
@@ -16,6 +17,7 @@ import { CalendarControls } from '@/components/calendar/CalendarControls';
 import { Sidebar } from '@/components/Sidebar';
 import { EventDetailModal } from '@/components/modals/EventDetailModal';
 import { Event } from '@/lib/mockData';
+import Theme from '@/lib/hoagie-ui/Theme';
 import styles from './calendar.module.css';
 
 type View = 'month' | 'week' | 'day';
@@ -55,9 +57,10 @@ export default function CalendarPage() {
   };
 
   return (
-    <Layout>
-      <Pane>
-        {/* Navigation bar using hoagie-ui */}
+    <Theme palette="purple">
+      <Pane display="flex" flexDirection="column" minHeight="100vh">
+        <Pane flex="1">
+          {/* Navigation bar using hoagie-ui */}
         <Nav
           name="calendar"
           user={mockUser}
@@ -125,6 +128,7 @@ export default function CalendarPage() {
           onClose={() => setIsModalOpen(false)}
         />
       </Pane>
-    </Layout>
+    </Pane>
+    </Theme>
   );
 }

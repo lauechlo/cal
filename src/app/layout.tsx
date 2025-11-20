@@ -8,6 +8,8 @@ import '@/lib/hoagie-ui/theme.css';
 import '@/styles/globals.css';
 import '@/styles/variables.css';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'HoagieCalendar - Princeton Event Discovery',
   description: 'Never miss a campus event. Browse, filter, and save events from HoagieMail.',
