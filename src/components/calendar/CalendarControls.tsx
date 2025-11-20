@@ -5,7 +5,7 @@
 
 'use client';
 
-import { format, addMonths, subMonths } from 'date-fns';
+import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays } from 'date-fns';
 import styles from './CalendarControls.module.css';
 
 type View = 'month' | 'week' | 'day';
@@ -27,6 +27,39 @@ export function CalendarControls({
   searchQuery = '',
   onSearchChange,
 }: CalendarControlsProps) {
+  // Navigate based on current view
+  const handlePrevious = () => {
+    if (view === 'month') {
+      onDateChange(subMonths(currentDate, 1));
+    } else if (view === 'week') {
+      onDateChange(subWeeks(currentDate, 1));
+    } else if (view === 'day') {
+      onDateChange(subDays(currentDate, 1));
+    }
+  };
+
+  const handleNext = () => {
+    if (view === 'month') {
+      onDateChange(addMonths(currentDate, 1));
+    } else if (view === 'week') {
+      onDateChange(addWeeks(currentDate, 1));
+    } else if (view === 'day') {
+      onDateChange(addDays(currentDate, 1));
+    }
+  };
+
+  const getPreviousTitle = () => {
+    if (view === 'month') return 'Previous month';
+    if (view === 'week') return 'Previous week';
+    return 'Previous day';
+  };
+
+  const getNextTitle = () => {
+    if (view === 'month') return 'Next month';
+    if (view === 'week') return 'Next week';
+    return 'Next day';
+  };
+
   return (
     <div className={styles.controls}>
       <div className={styles.controlsLeft}>
@@ -36,8 +69,8 @@ export function CalendarControls({
         <div className={styles.navButtons}>
           <button
             className={styles.navBtn}
-            onClick={() => onDateChange(subMonths(currentDate, 1))}
-            title="Previous month"
+            onClick={handlePrevious}
+            title={getPreviousTitle()}
           >
             ←
           </button>
@@ -49,8 +82,8 @@ export function CalendarControls({
           </button>
           <button
             className={styles.navBtn}
-            onClick={() => onDateChange(addMonths(currentDate, 1))}
-            title="Next month"
+            onClick={handleNext}
+            title={getNextTitle()}
           >
             →
           </button>
