@@ -78,6 +78,7 @@ export default function CalendarPage() {
             <Sidebar
               enabledCategories={enabledCategories}
               onCategoryToggle={handleCategoryToggle}
+              onEventClick={handleEventClick}
             />
           </aside>
 
